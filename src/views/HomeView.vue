@@ -30,6 +30,42 @@
           <p>了解我的背景和专业技能</p>
         </div>
       </div>
+      
+      <!-- 工具区域 -->
+      <div class="section-title scroll-animation">
+        <h2>实用工具</h2>
+        <div class="underline"></div>
+      </div>
+      
+      <div class="cards-container scroll-animation">
+        <div class="card tool-card">
+          <div class="card-icon">🔍</div>
+          <h3>GIS数据查询</h3>
+          <p>快速查询和检索地理信息系统数据，支持多种格式和坐标系</p>
+          <button class="card-btn">立即使用</button>
+        </div>
+        
+        <div class="card tool-card">
+          <div class="card-icon">🗺️</div>
+          <h3>地图可视化</h3>
+          <p>将复杂的地理数据转化为直观的可视化地图，支持自定义样式</p>
+          <button class="card-btn">立即使用</button>
+        </div>
+        
+        <div class="card tool-card">
+          <div class="card-icon">📊</div>
+          <h3>空间分析</h3>
+          <p>强大的空间分析工具，支持缓冲区分析、叠加分析和网络分析</p>
+          <button class="card-btn">立即使用</button>
+        </div>
+        
+        <div class="card tool-card">
+          <div class="card-icon">📱</div>
+          <h3>移动端采集</h3>
+          <p>便捷的移动端数据采集工具，支持离线采集和实时同步</p>
+          <button class="card-btn">立即使用</button>
+        </div>
+      </div>
     </main>
     
     <footer class="footer fade-in delay-3">
@@ -39,7 +75,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 onMounted(() => {
   // 平滑滚动效果
@@ -51,6 +87,26 @@ onMounted(() => {
       });
     });
   });
+  
+  // 滚动动画效果
+  const scrollAnimations = document.querySelectorAll('.scroll-animation');
+  
+  const checkScroll = () => {
+    scrollAnimations.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      
+      if (elementTop < windowHeight * 0.8) {
+        element.classList.add('active');
+      }
+    });
+  };
+  
+  // 初始检查
+  checkScroll();
+  
+  // 滚动时检查
+  window.addEventListener('scroll', checkScroll);
 });
 </script>
 
@@ -59,6 +115,15 @@ onMounted(() => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+:root {
+  --primary-color: #0066cc;
+  --secondary-color: #004d99;
+  --text-color: #333;
+  --card-background: white;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --animation-duration: 1s;
 }
 
 .header {
@@ -173,11 +238,51 @@ html {
   padding: 1.5rem;
   width: 280px;
   transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tool-card {
+  background: var(--card-background, white);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+
+.tool-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color, #0066cc);
+}
+
+.card-btn {
+  background-color: var(--primary-color, #0066cc);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: auto;
+}
+
+.card-btn:hover {
+  background-color: var(--secondary-color, #004d99);
+  transform: scale(1.05);
 }
 
 .footer {

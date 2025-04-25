@@ -2,7 +2,7 @@
   <div class="home">
     <header class="header">
       <nav class="nav">
-        <router-link to="/" class="logo">Gishai</router-link>
+        <router-link to="/" class="logo">及时嗨</router-link>
         <div class="nav-links">
           <router-link to="/home" class="nav-link" active-class="active-link">首页</router-link>
           <router-link to="/about" class="nav-link" active-class="active-link">关于</router-link>
@@ -13,8 +13,8 @@
     </header>
     
     <main class="main-content">
-      <h1 class="fade-in">欢迎来到Gishai</h1>
-      <p class="fade-in delay-1">这里将展示网站的主要内容</p>
+      <h1 class="fade-in">欢迎来到及时嗨</h1>
+      <p class="fade-in delay-1">源于"Web Log(网络日志)"，后来缩写为Blog</p>
       
       <div class="cards-container fade-in delay-2">
         <div class="card">

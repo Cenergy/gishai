@@ -3,9 +3,14 @@
     <header class="header">
       <nav class="nav">
         <router-link to="/" class="logo">及时嗨</router-link>
-        <div class="nav-links">
+        <button class="menu-btn" @click="isMenuOpen = !isMenuOpen" aria-label="菜单" :aria-expanded="isMenuOpen.toString()">
+          <span class="menu-icon" :class="{ open: isMenuOpen }">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+        <div class="nav-links" :class="{ open: isMenuOpen }">
           <router-link to="/home" class="nav-link" active-class="active-link">首页</router-link>
-          <router-link to="/about" class="nav-link" active-class="active-link">关于</router-link>
+          <router-link to="/blog" class="nav-link" active-class="active-link">博客</router-link>
           <router-link to="/projects" class="nav-link" active-class="active-link">项目</router-link>
           <router-link to="/contact" class="nav-link" active-class="active-link">联系</router-link>
         </div>
@@ -77,6 +82,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
+const isMenuOpen = ref(false);
+
 onMounted(() => {
   // 平滑滚动效果
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -87,24 +94,19 @@ onMounted(() => {
       });
     });
   });
-  
   // 滚动动画效果
   const scrollAnimations = document.querySelectorAll('.scroll-animation');
-  
   const checkScroll = () => {
     scrollAnimations.forEach(element => {
       const elementTop = element.getBoundingClientRect().top;
       const windowHeight = window.innerHeight;
-      
       if (elementTop < windowHeight * 0.8) {
         element.classList.add('active');
       }
     });
   };
-  
   // 初始检查
   checkScroll();
-  
   // 滚动时检查
   window.addEventListener('scroll', checkScroll);
 });
@@ -138,6 +140,8 @@ onMounted(() => {
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .logo {
@@ -199,7 +203,7 @@ onMounted(() => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -210,56 +214,81 @@ html {
 
 @media (max-width: 768px) {
   .nav {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
   }
   
   .nav-links {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.25rem 0;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
   }
   
   .cards-container {
     flex-direction: column;
+    align-items: center;
+  }
+  
+  .card, .tool-card {
+    width: 90%;
+    max-width: 350px;
+    margin-bottom: 1.5rem;
   }
 }
 .cards-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 2.5rem;
+  margin: 4rem auto;
   flex-wrap: wrap;
+  max-width: 1200px;
+  padding: 0 2rem;
 }
 
 .card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  width: 280px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  width: 300px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 102, 204, 0.1);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f6ff 100%);
 }
 
 .tool-card {
   background: var(--card-background, white);
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  transition: transform 0.5s, box-shadow 0.5s;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0.5rem;
 }
 
 .tool-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #f5f9ff 0%, #e6f0ff 100%);
 }
 
 .card-icon {
@@ -290,5 +319,66 @@ html {
   padding: 2rem;
   background-color: #f8f9fa;
   margin-top: auto;
+}
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 1rem;
+  z-index: 1002;
+}
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  transition: all 0.3s;
+}
+.menu-icon span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: #333;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.menu-icon.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+.menu-icon.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block;
+  }
+  .nav-links {
+    position: absolute;
+    top: 56px;
+    right: 0;
+    left: 0;
+    background: #fff;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100vw;
+    padding: 0.5rem 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    z-index: 1001;
+    display: none;
+    transition: all 0.3s;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav {
+    position: relative;
+  }
 }
 </style>
